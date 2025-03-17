@@ -1,0 +1,14 @@
+# pip install -r requirements.txt
+
+requests
+gTTS
+playsound
+pydub
+langchain
+faiss-cpu
+tiktoken
+
+pandas
+torch
+transformers
+nltk
