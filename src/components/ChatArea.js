@@ -16,7 +16,6 @@ function ChatArea() {
     const userMessage = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    // Simulate a bot response
     const botResponse = {
       text: `Summary for "${input}": Here's what I found...`,
       sender: "bot",
@@ -32,7 +31,7 @@ function ChatArea() {
     <div className="flex flex-col h-full w-full max-w-3xl mx-auto">
       <div
         ref={chatHistoryRef}
-        className="flex-1 overflow-y-auto bg-[#1e2129] p-4 space-y-4"
+        className="flex-1 overflow-y-auto bg-[#1e2129] p-4 space-y-4 custom-scrollbar"
       >
         {messages.length === 0 ? (
           <div className="text-center text-[#e5e7eb] opacity-70 mt-20">
@@ -69,6 +68,33 @@ function ChatArea() {
           Send
         </button>
       </div>
+
+      {/* Inline Custom Scrollbar Styles */}
+      <style>{`
+        .custom-scrollbar {
+          scrollbar-width: thin; /* Firefox */
+          scrollbar-color: #4a4e5a #2a2d37; /* Firefox */
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #2a2d37;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #4a4e5a;
+          border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #5a5e6a;
+        }
+        /* Ensure the scrollbar is visible even if the browser doesn't support customization */
+        .custom-scrollbar {
+          overflow-y: auto !important;
+        }
+      `}</style>
     </div>
   );
 }
