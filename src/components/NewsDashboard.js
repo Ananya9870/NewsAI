@@ -28,7 +28,7 @@ function NewsDashboard() {
         news.map((item) => (
           <div
             key={item.id}
-            className="p-4 bg-[#343541] rounded-lg shadow-md border border-[#444654]"
+            className="p-4 bg-[#343541] rounded-lg shadow-md border border-[#444654] w-full"
           >
             <h3 className="text-lg font-semibold text-white uppercase">
               {item.title}

@@ -11,15 +11,27 @@ function App() {
   useEffect(() => {
     if (dashboardRef.current) {
       gsap.to(dashboardRef.current, {
-        x: isDashboardOpen ? 0 : "-100%",
-        duration: 0.2,
+        width: isDashboardOpen ? "20rem" : "0rem",
+        duration: 0.3,
         ease: "power3.inOut",
+        onStart: () => {
+          if (!isDashboardOpen) {
+            dashboardRef.current.style.overflow = "hidden";
+            dashboardRef.current.style.visibility = "hidden";
+          }
+        },
+        onComplete: () => {
+          if (isDashboardOpen) {
+            dashboardRef.current.style.overflow = "auto";
+            dashboardRef.current.style.visibility = "visible";
+          }
+        },
       });
     }
   }, [isDashboardOpen]);
 
   return (
-    <div className="min-h-screen bg-[#1e2129] flex flex-col relative">
+    <div className="h-screen bg-[#1e2129] flex flex-row overflow-hidden relative">
       {/* Hamburger Button */}
       <button
         onClick={() => setIsDashboardOpen(!isDashboardOpen)}
@@ -44,18 +56,16 @@ function App() {
       {/* Dashboard */}
       <div
         ref={dashboardRef}
-        className="fixed top-0 left-0 h-full w-80 bg-[#2a2d37] text-[#e5e7eb] transform transition-transform duration-300 z-40"
+        className="h-full w-80 bg-[#2a2d37] text-[#e5e7eb] flex-shrink-0 overflow-hidden"
       >
         <div className="p-6 pt-16">
-          {" "}
-          {/* pt-16 ensures no overlap with button */}
           <h1 className="text-2xl font-bold mb-4">Local News Dashboard</h1>
           <NewsDashboard />
         </div>
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col items-center justify-between p-6">
+      <div className="flex-1 h-full flex flex-col p-6">
         <ChatArea />
       </div>
     </div>
