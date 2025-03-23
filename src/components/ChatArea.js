@@ -27,6 +27,17 @@ function ChatArea() {
     if (e.key === "Enter") handleSend();
   };
 
+  const handleMicClick = () => {
+    console.log("Microphone clicked! Implement speech-to-text here.");
+    // To implement speech-to-text, you can use the Web Speech API:
+    // const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    // recognition.onresult = (event) => {
+    //   const transcript = event.results[0][0].transcript;
+    //   setInput(transcript);
+    // };
+    // recognition.start();
+  };
+
   return (
     <div className="flex flex-col h-full w-full max-w-3xl mx-auto">
       <div
@@ -62,8 +73,27 @@ function ChatArea() {
           placeholder="Type your prompt..."
         />
         <button
+          onClick={handleMicClick}
+          className="p-2 text-white rounded-md hover:bg-[#4a4e5a] transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+            />
+          </svg>
+        </button>
+        <button
           onClick={handleSend}
-          className="p-2 bg-[#10a37f] text-white rounded-md hover:bg-[#0d8c6b] transition-colors"
+          className="p-2 bg-[#3b82f6] text-white rounded-md hover:bg-[#2563eb] transition-colors"
         >
           Send
         </button>
@@ -90,7 +120,6 @@ function ChatArea() {
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: #5a5e6a;
         }
-        /* Ensure the scrollbar is visible even if the browser doesn't support customization */
         .custom-scrollbar {
           overflow-y: auto !important;
         }
