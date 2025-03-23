@@ -26,15 +26,18 @@ function NewsDashboard() {
     <div className="space-y-4">
       {news.length > 0 ? (
         news.map((item) => (
-          <div key={item.id} className="p-4 bg-white rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold text-gray-800">
+          <div
+            key={item.id}
+            className="p-4 bg-[#343541] rounded-lg shadow-md border border-[#444654]"
+          >
+            <h3 className="text-lg font-semibold text-white uppercase">
               {item.title}
             </h3>
-            <p className="text-gray-600">{item.summary}</p>
+            <p className="text-[#d1d5db]">{item.summary}</p>
           </div>
         ))
       ) : (
-        <p className="text-gray-500">Loading news...</p>
+        <p className="text-[#d1d5db]">Loading news...</p>
       )}
     </div>
   );
