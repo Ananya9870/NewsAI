@@ -7,13 +7,14 @@ import "./App.css";
 function App() {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const dashboardRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     if (dashboardRef.current) {
       gsap.to(dashboardRef.current, {
         width: isDashboardOpen ? "20rem" : "0rem",
-        duration: 0.3,
-        ease: "power3.inOut",
+        duration: 0.2, // Increased duration for smoother feel
+        ease: "expo.inOut'", // Smoother easing
         onStart: () => {
           if (!isDashboardOpen) {
             dashboardRef.current.style.overflow = "hidden";
@@ -27,6 +28,13 @@ function App() {
           }
         },
       });
+
+      // Fade animation for the dashboard content
+      gsap.to(contentRef.current, {
+        opacity: isDashboardOpen ? 1 : 0,
+        duration: 0.3,
+        ease: "power2.inOut",
+      });
     }
   }, [isDashboardOpen]);
 
@@ -37,20 +45,11 @@ function App() {
         onClick={() => setIsDashboardOpen(!isDashboardOpen)}
         className="fixed top-4 left-4 z-50 p-2 bg-[#2a2d37] rounded-md text-[#e5e7eb] hover:bg-[#3a3d47] transition-colors"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
+        <div className={`hamburger ${isDashboardOpen ? "open" : ""}`}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </button>
 
       {/* Dashboard */}
@@ -58,7 +57,7 @@ function App() {
         ref={dashboardRef}
         className="h-full w-80 bg-[#2a2d37] text-[#e5e7eb] flex-shrink-0 overflow-hidden"
       >
-        <div className="p-6 pt-16">
+        <div ref={contentRef} className="p-6 pt-16">
           <h1 className="text-2xl font-bold mb-4">Local News Dashboard</h1>
           <NewsDashboard />
         </div>
@@ -68,6 +67,37 @@ function App() {
       <div className="flex-1 h-full flex flex-col p-6">
         <ChatArea />
       </div>
+
+      {/* Inline Styles for Hamburger Animation */}
+      <style>{`
+        .hamburger {
+          width: 24px;
+          height: 18px;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        .hamburger span {
+          width: 100%;
+          height: 2px;
+          background: #e5e7eb;
+          transition: all 0.3s ease;
+        }
+        .hamburger.open span:nth-child(1) {
+          transform: rotate(45deg);
+          position: absolute;
+          top: 8px;
+        }
+        .hamburger.open span:nth-child(2) {
+          opacity: 0;
+        }
+        .hamburger.open span:nth-child(3) {
+          transform: rotate(-45deg);
+          position: absolute;
+          top: 8px;
+        }
+      `}</style>
     </div>
   );
 }
