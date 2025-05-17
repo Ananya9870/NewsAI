@@ -2,10 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import NewsDashboard from "./components/NewsDashboard";
 import ChatArea from "./components/ChatArea";
+import LocationPrompt from "./components/LocationPrompt";
+import { UserPreferencesProvider, useUserPreferences } from "./context/UserPreferences";
 import "./App.css";
 
-function App() {
+// Main App content separated to use the context
+function AppContent() {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+  const { isFirstVisit } = useUserPreferences();
   const dashboardRef = useRef(null);
   const contentRef = useRef(null);
 
@@ -13,8 +17,8 @@ function App() {
     if (dashboardRef.current) {
       gsap.to(dashboardRef.current, {
         width: isDashboardOpen ? "20rem" : "0rem",
-        duration: 0.2, // Increased duration for smoother feel
-        ease: "expo.inOut'", // Smoother easing
+        duration: 0.2,
+        ease: "expo.inOut'",
         onStart: () => {
           if (!isDashboardOpen) {
             dashboardRef.current.style.overflow = "hidden";
@@ -40,10 +44,13 @@ function App() {
 
   return (
     <div className="h-screen bg-[#1e2129] flex flex-row overflow-hidden relative">
+      {/* Location Prompt on first visit */}
+      {isFirstVisit && <LocationPrompt />}
+
       {/* Hamburger Button */}
       <button
         onClick={() => setIsDashboardOpen(!isDashboardOpen)}
-        className="fixed top-4 left-4 z-50 p-2 bg-[#2a2d37] rounded-md text-[#e5e7eb] hover:bg-[#3a3d47] transition-colors"
+        className="fixed top-4 left-4 z-40 p-2 bg-[#2a2d37] rounded-md text-[#e5e7eb] hover:bg-[#3a3d47] transition-colors"
       >
         <div className={`hamburger ${isDashboardOpen ? "open" : ""}`}>
           <span></span>
@@ -99,6 +106,15 @@ function App() {
         }
       `}</style>
     </div>
+  );
+}
+
+// Main App component that provides the context
+function App() {
+  return (
+    <UserPreferencesProvider>
+      <AppContent />
+    </UserPreferencesProvider>
   );
 }
 

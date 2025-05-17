@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useUserPreferences } from "../context/UserPreferences";
+import { searchNews } from "../utils/database";
+import { languages } from "../utils/languages";
 
 function ChatArea() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const { language, location } = useUserPreferences();
   const chatHistoryRef = useRef(null);
 
   useEffect(() => {
@@ -11,15 +15,45 @@ function ChatArea() {
     }
   }, [messages]);
 
+  // Add a welcome message when component mounts
+  useEffect(() => {
+    const currentLanguage = languages[language] || "English";
+    const welcomeMessage = {
+      text: `Welcome! I can provide news summaries in ${currentLanguage}${location ? ` for ${location.name}` : ''}. How can I help you today?`,
+      sender: "bot",
+    };
+    setMessages([welcomeMessage]);
+  }, [language, location]);
+
   const handleSend = async () => {
     if (!input.trim()) return;
     const userMessage = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    const botResponse = {
-      text: `Summary for "${input}": Here's what I found...`,
-      sender: "bot",
-    };
+    
+    // Search the news database for relevant articles
+    const searchResults = searchNews(input, language);
+    
+    // Generate a response based on search results
+    let botResponse;
+    if (searchResults.length > 0) {
+      // Format a response with the search results
+      const summary = searchResults.map(article => 
+        `- ${article.title}: ${article.summary}`
+      ).join('\n');
+      
+      botResponse = {
+        text: `Here's what I found about "${input}":\n\n${summary}`,
+        sender: "bot",
+      };
+    } else {
+      // No results found
+      botResponse = {
+        text: `I couldn't find any specific news about "${input}". Would you like to try a different query?`,
+        sender: "bot",
+      };
+    }
+    
     setMessages((prev) => [...prev, botResponse]);
   };
 
@@ -40,6 +74,14 @@ function ChatArea() {
 
   return (
     <div className="flex flex-col h-full w-full max-w-3xl mx-auto">
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold text-white">News Summarizer</h1>
+        <p className="text-[#8e8ea0]">
+          {location ? `Local news for ${location.name}` : 'Set your location for local news'} 
+          {language && ` • ${languages[language]}`}
+        </p>
+      </div>
+      
       <div
         ref={chatHistoryRef}
         className="flex-1 overflow-y-auto bg-[#1e2129] p-4 space-y-4 custom-scrollbar"
@@ -58,7 +100,12 @@ function ChatArea() {
                   : "bg-[#444654] text-white max-w-[80%]"
               }`}
             >
-              {msg.text}
+              {msg.text.split('\n').map((line, i) => (
+                <React.Fragment key={i}>
+                  {line}
+                  {i < msg.text.split('\n').length - 1 && <br />}
+                </React.Fragment>
+              ))}
             </div>
           ))
         )}
