@@ -62,7 +62,7 @@ function AppContent() {
       {/* Dashboard */}
       <div
         ref={dashboardRef}
-        className="h-full w-80 bg-[#2a2d37] text-[#e5e7eb] flex-shrink-0 overflow-hidden"
+        className="h-full w-80 bg-[#2a2d37] text-[#e5e7eb] flex-shrink-0 overflow-hidden custom-scrollbar"
       >
         <div ref={contentRef} className="p-6 pt-16">
           <h1 className="text-2xl font-bold mb-4">Local News Dashboard</h1>

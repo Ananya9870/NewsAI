@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getUserLocation, defaultLocations } from '../utils/location';
+import { getUserLocation, defaultLocations, getCityFromCoords } from '../utils/location';
 import { useUserPreferences } from '../context/UserPreferences';
 
 function LocationPrompt() {
@@ -14,10 +14,16 @@ function LocationPrompt() {
     
     try {
       const coords = await getUserLocation();
-      updateLocation({
-        name: 'Current Location',
-        ...coords
-      });
+      // Try to get a city name from coordinates
+      try {
+        const locationObj = await getCityFromCoords(coords.latitude, coords.longitude);
+        updateLocation(locationObj);
+      } catch (e) {
+        updateLocation({
+          name: 'Current Location',
+          ...coords
+        });
+      }
     } catch (err) {
       setError('Could not detect your location. Please select from the list or enter manually.');
     } finally {

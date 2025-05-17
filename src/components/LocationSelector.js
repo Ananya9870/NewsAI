@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getUserLocation, defaultLocations } from '../utils/location';
+import { getUserLocation, defaultLocations, getCityFromCoords } from '../utils/location';
 import { useUserPreferences } from '../context/UserPreferences';
 
 function LocationSelector() {
@@ -14,10 +14,16 @@ function LocationSelector() {
     
     try {
       const coords = await getUserLocation();
-      updateLocation({
-        name: 'Current Location',
-        ...coords
-      });
+      // Try to get a city name from coordinates
+      try {
+        const locationObj = await getCityFromCoords(coords.latitude, coords.longitude);
+        updateLocation(locationObj);
+      } catch (e) {
+        updateLocation({
+          name: 'Current Location',
+          ...coords
+        });
+      }
     } catch (err) {
       setError('Could not detect your location. Please select from the list below.');
     } finally {
@@ -41,10 +47,12 @@ function LocationSelector() {
       <div className="p-3 bg-[#343541] rounded-lg shadow-md border border-[#444654]">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-white font-medium">{location?.name || 'Not set'}</p>
+            <p className="text-white font-medium">
+              {location?.name || 'Location not set'}
+            </p>
             {location && (
-              <p className="text-[#8e8ea0] text-sm">
-                {location.latitude.toFixed(2)}, {location.longitude.toFixed(2)}
+              <p className="text-sm text-[#8e8ea0]">
+                {location.latitude.toFixed(4)}, {location.longitude.toFixed(4)}
               </p>
             )}
           </div>

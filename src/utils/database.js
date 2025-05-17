@@ -9,7 +9,7 @@ const newsData = {
       id: 1,
       title: "Local Festival",
       summary: "Annual cultural festival downtown this weekend.",
-      location: "New York",
+      location: "New York, NY",
       category: "entertainment",
       date: "2023-06-15"
     },
@@ -17,7 +17,7 @@ const newsData = {
       id: 2,
       title: "New Infrastructure Project",
       summary: "City announces new road renovation project.",
-      location: "London",
+      location: "London, UK",
       category: "politics",
       date: "2023-06-14"
     },
@@ -25,9 +25,41 @@ const newsData = {
       id: 3,
       title: "Tech Conference",
       summary: "Major tech companies gathering for annual conference.",
-      location: "Tokyo",
+      location: "Tokyo, Japan",
       category: "technology",
       date: "2023-06-16"
+    },
+    {
+      id: 4,
+      title: "Art Exhibition Opening",
+      summary: "New art exhibition featuring local artists opens this weekend.",
+      location: "New York, NY",
+      category: "culture",
+      date: "2023-06-17"
+    },
+    {
+      id: 5,
+      title: "Local Sports Team Wins Championship",
+      summary: "Celebration parade planned for downtown this Saturday.",
+      location: "New York, NY",
+      category: "sports",
+      date: "2023-06-18"
+    },
+    {
+      id: 6,
+      title: "New Restaurant Opening",
+      summary: "Celebrity chef opens new fusion restaurant in the city center.",
+      location: "London, UK",
+      category: "food",
+      date: "2023-06-19"
+    },
+    {
+      id: 7,
+      title: "Environmental Initiative Announced",
+      summary: "City launches new recycling program to reduce waste.",
+      location: "Tokyo, Japan",
+      category: "environment",
+      date: "2023-06-20"
     }
   ],
   // Example of news in another language
@@ -36,7 +68,7 @@ const newsData = {
       id: 1,
       title: "Festival Local",
       summary: "Festival cultural anual en el centro este fin de semana.",
-      location: "New York",
+      location: "New York, NY",
       category: "entertainment",
       date: "2023-06-15"
     },
@@ -44,9 +76,25 @@ const newsData = {
       id: 2,
       title: "Nuevo Proyecto de Infraestructura",
       summary: "La ciudad anuncia un nuevo proyecto de renovación de carreteras.",
-      location: "London",
+      location: "London, UK",
       category: "politics",
       date: "2023-06-14"
+    },
+    {
+      id: 3,
+      title: "Conferencia de Tecnología",
+      summary: "Grandes empresas tecnológicas se reúnen para conferencia anual.",
+      location: "Tokyo, Japan",
+      category: "technology",
+      date: "2023-06-16"
+    },
+    {
+      id: 4,
+      title: "Apertura de Exposición de Arte",
+      summary: "Nueva exposición de arte con artistas locales abre este fin de semana.",
+      location: "New York, NY",
+      category: "culture",
+      date: "2023-06-17"
     }
   ]
 };
@@ -59,6 +107,11 @@ let dateIndex = {};
 // Function to initialize and index the database
 export const indexDatabase = () => {
   console.log("Indexing database...");
+  
+  // Reset indexes
+  locationIndex = {};
+  categoryIndex = {};
+  dateIndex = {};
   
   // Create indexes
   Object.entries(newsData).forEach(([language, articles]) => {
@@ -120,13 +173,27 @@ const loadIndexes = () => {
   if (storedDateIndex) dateIndex = JSON.parse(storedDateIndex);
 };
 
+// Automatically index the database when the module is imported
+(() => {
+  // Check if database has been indexed already
+  const storedLocationIndex = localStorage.getItem('newsLocationIndex');
+  if (!storedLocationIndex) {
+    // First-time indexing
+    indexDatabase();
+  } else {
+    // Load existing indexes
+    loadIndexes();
+  }
+})();
+
 // Get news by location
 export const getNewsByLocation = (location, language = 'en') => {
-  loadIndexes();
-  
   // If no indexes exist, create them
   if (Object.keys(locationIndex).length === 0) {
-    indexDatabase();
+    loadIndexes();
+    if (Object.keys(locationIndex).length === 0) {
+      indexDatabase();
+    }
   }
   
   // If language is not available, fall back to English
@@ -150,11 +217,12 @@ export const getNewsByLocation = (location, language = 'en') => {
 
 // Get news by category
 export const getNewsByCategory = (category, language = 'en') => {
-  loadIndexes();
-  
   // If no indexes exist, create them
   if (Object.keys(categoryIndex).length === 0) {
-    indexDatabase();
+    loadIndexes();
+    if (Object.keys(categoryIndex).length === 0) {
+      indexDatabase();
+    }
   }
   
   // If language is not available, fall back to English
@@ -178,11 +246,12 @@ export const getNewsByCategory = (category, language = 'en') => {
 
 // Get news by date
 export const getNewsByDate = (date, language = 'en') => {
-  loadIndexes();
-  
   // If no indexes exist, create them
   if (Object.keys(dateIndex).length === 0) {
-    indexDatabase();
+    loadIndexes();
+    if (Object.keys(dateIndex).length === 0) {
+      indexDatabase();
+    }
   }
   
   // If language is not available, fall back to English
@@ -217,10 +286,4 @@ export const searchNews = (query, language = 'en') => {
     article.title.toLowerCase().includes(lowerQuery) || 
     article.summary.toLowerCase().includes(lowerQuery)
   );
-};
-
-// Initialize the database on load
-loadIndexes();
-if (Object.keys(locationIndex).length === 0) {
-  indexDatabase();
-} 
+}; 

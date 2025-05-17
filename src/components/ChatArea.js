@@ -18,8 +18,9 @@ function ChatArea() {
   // Add a welcome message when component mounts
   useEffect(() => {
     const currentLanguage = languages[language] || "English";
+    const locationName = location && typeof location === 'object' ? location.name : '';
     const welcomeMessage = {
-      text: `Welcome! I can provide news summaries in ${currentLanguage}${location ? ` for ${location.name}` : ''}. How can I help you today?`,
+      text: `Welcome! I can provide news summaries in ${currentLanguage}${locationName ? ` for ${locationName}` : ''}. How can I help you today?`,
       sender: "bot",
     };
     setMessages([welcomeMessage]);
@@ -77,7 +78,9 @@ function ChatArea() {
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-white">News Summarizer</h1>
         <p className="text-[#8e8ea0]">
-          {location ? `Local news for ${location.name}` : 'Set your location for local news'} 
+          {location && typeof location === 'object' && location.name 
+            ? `Local news for ${location.name}` 
+            : 'Set your location for local news'} 
           {language && ` • ${languages[language]}`}
         </p>
       </div>

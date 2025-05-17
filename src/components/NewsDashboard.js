@@ -6,64 +6,90 @@ import { getNewsByLocation, indexDatabase } from "../utils/database";
 
 function NewsDashboard() {
   const [news, setNews] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [indexStats, setIndexStats] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Start with loading true
   const { language, location } = useUserPreferences();
 
   // Initialize database on component mount
   useEffect(() => {
-    const initializeDatabase = async () => {
-      setIsLoading(true);
-      const stats = indexDatabase();
-      setIndexStats(stats);
-      setIsLoading(false);
-    };
-
-    initializeDatabase();
-  }, []);
+    try {
+      indexDatabase(); // Just index the database without storing stats
+    } catch (error) {
+      console.error("Error initializing database:", error);
+    }
+  }, []); // Empty dependency array: runs once on mount
 
   // Fetch news when language or location changes
   useEffect(() => {
-    const fetchNews = async () => {
-      if (!location) return;
-      
-      setIsLoading(true);
-      // Simulate a delay to show loading state
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Get news for the selected location
-      const locationNews = getNewsByLocation(location.name, language);
-      
-      if (locationNews.length > 0) {
-        setNews(locationNews);
-      } else {
-        // Fallback - if no news for this location, just use mock data
-        const mockNews = [
-          {
-            id: 1,
-            title: "Local Event Today",
-            summary: `A festival is happening in ${location.name}.`,
-            location: location.name,
-            category: "entertainment",
-            date: new Date().toISOString().slice(0, 10)
-          },
-          {
-            id: 2,
-            title: "Weather Update",
-            summary: `Sunny with a high of 75°F in ${location.name}.`,
-            location: location.name,
-            category: "weather",
-            date: new Date().toISOString().slice(0, 10)
-          },
-        ];
-        setNews(mockNews);
+    let isMounted = true; // Flag to track component mount status
+
+    const fetchNewsData = async () => {
+      if (!location) {
+        if (isMounted) {
+          setNews([]); // Clear news if no location
+          setIsLoading(false); // Not loading anything if no location
+        }
+        return;
       }
       
-      setIsLoading(false);
+      if (isMounted) {
+        setIsLoading(true);
+      }
+      
+      try {
+        // Simulate a delay to show loading state
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Get news for the selected location
+        // Assuming getNewsByLocation is synchronous; if it were async, add await
+        const locationNews = getNewsByLocation(location.name, language);
+        
+        if (isMounted) {
+          if (locationNews && locationNews.length > 0) {
+            setNews(locationNews);
+          } else {
+            // Fallback - if no news for this location, just use mock data
+            const locationName = location.name || "your area";
+            const mockNews = [
+              {
+                id: 1,
+                title: `Local Event Today in ${locationName}`, // Made title more dynamic for clarity
+                summary: `A festival is happening in ${locationName}.`,
+                location: locationName,
+                category: "entertainment",
+                date: new Date().toISOString().slice(0, 10)
+              },
+              {
+                id: 2,
+                title: `Weather Update for ${locationName}`, // Made title more dynamic for clarity
+                summary: `Sunny with a high of 75°F in ${locationName}.`,
+                location: locationName,
+                category: "weather",
+                date: new Date().toISOString().slice(0, 10)
+              },
+            ];
+            setNews(mockNews);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch news:", error);
+        if (isMounted) {
+          setNews([]); // Clear news on error
+          // Optionally, set an error message to display to the user
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
     };
     
-    fetchNews();
-  }, [language, location]);
+    fetchNewsData();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [language, location]); // Dependencies: language, location
 
   return (
     <div className="space-y-6">
@@ -74,14 +100,6 @@ function NewsDashboard() {
       
       <LocationSelector />
       
-      {indexStats && (
-        <div className="mt-4 p-3 bg-[#343541] rounded-lg text-sm text-[#8e8ea0]">
-          <p>Database indexed with {indexStats.totalArticles} articles</p>
-          <p>Languages: {indexStats.languages}</p>
-          <p>Locations: {indexStats.locations}</p>
-        </div>
-      )}
-      
       <div className="mt-6">
         <h3 className="text-lg font-semibold text-white mb-2">Local News</h3>
         
@@ -90,7 +108,7 @@ function NewsDashboard() {
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#3b82f6]"></div>
           </div>
         ) : news.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
             {news.map((item) => (
               <div
                 key={item.id}
@@ -109,7 +127,7 @@ function NewsDashboard() {
             ))}
           </div>
         ) : (
-          <p className="text-[#d1d5db]">No news available for your location.</p>
+          <p className="text-[#d1d5db]">No news available for your location or an error occurred.</p>
         )}
       </div>
     </div>
