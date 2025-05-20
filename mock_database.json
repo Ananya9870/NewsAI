@@ -1,0 +1,57 @@
+ # this is the mock databse to which my chatbot is connected 
+
+[
+  {
+    "category": "news",
+    "content": "Floods Hit New York: Heavy rainfall causes flooding in New York streets.",
+    "metadata": {
+      "location": "New York",
+      "date": "2025-03-22"
+    }
+  },
+  {
+    "category": "news",
+    "content": "Tech Conference in San Francisco: Annual tech event draws thousands.",
+    "metadata": {
+      "location": "San Francisco",
+      "date": "2025-03-21"
+    }
+  },
+  {
+    "category": "weather",
+    "content": "Weather in Delhi: 42°C, Sunny",
+    "metadata": {
+      "location": "Delhi",
+      "date": "2025-03-23"
+    }
+  },
+  {
+    "category": "weather",
+    "content": "Weather in Tokyo: 18°C, Partly Cloudy",
+    "metadata": {
+      "location": "Tokyo",
+      "date": "2025-03-23"
+    }
+  },
+  {
+    "category": "sports",
+    "content": "India Wins Cricket Match Against Australia: Thrilling victory in Dubai International Cricket Stadium, Dubai, United Arab Emirates..",
+    "metadata": {
+      "location": "Dubai International Cricket Stadium, Dubai, United Arab Emirates.",
+      "date": "2025-03-04"
+    }
+  },
+  {
+    "category": "events",
+    "content": "Music Festival in London: Top artists perform over the weekend.",
+    "metadata": {
+      "location": "London",
+      "date": "2025-03-23"
+    }
+  },
+  {
+    "category": "facts",
+    "content": "The Eiffel Tower is 330 meters tall.",
+    "metadata": {}
+  }
+]
