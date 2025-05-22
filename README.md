@@ -20,28 +20,21 @@ A powerful AI-driven agent that provides real-time, location-specific news, enri
 
 🧰 Built With
 LangChain
-
 Google Gemini (Generative AI)
-
 Chroma Vector DB
-
 HuggingFace Embeddings
-
 DuckDuckGo Search API Wrapper
-
 Google News RSS
-
 BeautifulSoup
-
 Deep Translator
-
 gTTS
-
 playsound3
 
 Set up a virtual environment (optional)
-bash
-Copy
-Edit
 python -m venv venv
-source venv/bin/activate 
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+
+
+Set your API Key
+Replace the placeholder inside main.py with your actual Google API key:
+GOOGLE_API_KEY = "your-api-key-here"
