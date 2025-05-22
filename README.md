@@ -1,14 +1,47 @@
 ## NewsAI 
-AI LOCALIZED NEWS SUMMARIZER: AI-powered RAG-based web app for real-time, personalized news summaries
+🌍 Location-Specific News Agent
+A powerful AI-driven agent that provides real-time, location-specific news, enriched with capabilities such as summarization, translation, speech synthesis, and intelligent memory-based interactions. It leverages Google Gemini, LangChain, ChromaDB, and DuckDuckGo to deliver contextual news experiences.
 
-# Overview
 
-AI Localized News Summarizer is a Retrieval-Augmented Generation (RAG)-based web application that provides personalized news updates based on the user’s location and the latest global events. The app fetches real-time news, summarizes key points using AI, and offers a text-to-speech (TTS) feature for vocal responses.
+🚀 Features
+🔎 City-Based News Search: Just ask “What’s the latest in Delhi?” and get today’s news.
 
-# Key Features
+🧠 Memory-Powered Conversations: Follows up intelligently when you ask for “more info on the first one.”
 
-✅ Real-time News Updates – Fetches live news based on location.
-✅ AI-Powered Summarization – Condenses articles into key points.
-✅ Personalized Feed – Curates news relevant to the user’s region.
-✅ Text-to-Speech (TTS) – Converts summaries into vocal responses.
-✅ User-Friendly Interface – Clean and responsive design for easy navigation.
+💬 News Summarization: Extracts and summarizes detailed articles.
+
+🌐 Multilingual Translation: Translates articles to your preferred language.
+
+🔊 Text-to-Speech: Listen to news headlines and summaries in your language.
+
+🗃️ Vector Database: Stores and retrieves recent news for enhanced performance.
+
+🔁 Automatic Old News Cleanup: Keeps your database fresh.
+
+🧰 Built With
+LangChain
+
+Google Gemini (Generative AI)
+
+Chroma Vector DB
+
+HuggingFace Embeddings
+
+DuckDuckGo Search API Wrapper
+
+Google News RSS
+
+BeautifulSoup
+
+Deep Translator
+
+gTTS
+
+playsound3
+
+Set up a virtual environment (optional)
+bash
+Copy
+Edit
+python -m venv venv
+source venv/bin/activate 
