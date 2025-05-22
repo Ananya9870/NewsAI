@@ -20,14 +20,23 @@ A powerful AI-driven agent that provides real-time, location-specific news, enri
 
 🧰 Built With
 LangChain
+
 Google Gemini (Generative AI)
+
 Chroma Vector DB
+
 HuggingFace Embeddings
+
 DuckDuckGo Search API Wrapper
+
 Google News RSS
+
 BeautifulSoup
+
 Deep Translator
+
 gTTS
+
 playsound3
 
 Set up a virtual environment (optional)
