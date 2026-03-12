@@ -1,49 +1,80 @@
-## NewsAI 
-🌍 Location-Specific News Agent
-A powerful AI-driven agent that provides real-time, location-specific news, enriched with capabilities such as summarization, translation, speech synthesis, and intelligent memory-based interactions. It leverages Google Gemini, LangChain, ChromaDB, and DuckDuckGo to deliver contextual news experiences.
+NewsAI: AI-Powered News Analytics Dashboard
+NewsAI is a sophisticated news aggregation and analysis platform that transforms raw news data into actionable insights. By leveraging Large Language Models (LLMs) and advanced Natural Language Processing (NLP), the platform provides real time summaries, sentiment tracking, and interactive visualizations to help users stay informed efficiently.
 
+🚀 Key Features
+Real-Time News Aggregation: Automatically fetches the latest headlines across multiple categories and sources.
 
-🚀 Features
-🔎 City-Based News Search: Just ask “What’s the latest in Delhi?” and get today’s news.
+Gemini-Powered Insights: Utilizes Google Gemini Pro to generate concise, high quality summaries of complex news articles.
 
-🧠 Memory-Powered Conversations: Follows up intelligently when you ask for “more info on the first one.”
+BERT-Based Sentiment Analysis: Employs a fine-tuned BERT model to classify the emotional tone of news (Positive, Negative, or Neutral).
 
-💬 News Summarization: Extracts and summarizes detailed articles.
+Interactive Dashboard: A clean, responsive UI built with Streamlit for seamless data exploration and filtering.
 
-🌐 Multilingual Translation: Translates articles to your preferred language.
+Trend Visualization: Visual representations of news volume and sentiment shifts over time.
 
-🔊 Text-to-Speech: Listen to news headlines and summaries in your language.
+🛠️ Tech Stack
+Frontend: Streamlit (for a fast, interactive web interface)
 
-🗃️ Vector Database: Stores and retrieves recent news for enhanced performance.
+Backend Framework: FastAPI (for high-performance API management)
 
-🔁 Automatic Old News Cleanup: Keeps your database fresh.
+LLM/Generative AI: Google Gemini Pro (for summarization and insight generation)
 
-🧰 Built With
-LangChain
+NLP/Machine Learning: BERT (Bidirectional Encoder Representations from Transformers)
 
-Google Gemini (Generative AI)
+Database: MongoDB (for scalable storage of news metadata and analysis)
 
-Chroma Vector DB
+Programming Language: Python 3.x
 
-HuggingFace Embeddings
+🔌 APIs & Models
+Google Gemini API: Powers the intelligent summary engine to distill long-form articles into key bullet points.
 
-DuckDuckGo Search API Wrapper
+HuggingFace Transformers: Used to implement the BERT model for state-of-the-art sentiment classification.
 
-Google News RSS
+News API / GNews: (Or your specific provider) Used to fetch the latest global news data.
 
-BeautifulSoup
+⚙️ How It Works
+Data Ingestion: The system polls news APIs to retrieve the latest articles based on user interests or trending topics.
 
-Deep Translator
+Processing Pipeline:
 
-gTTS
+Summarization: The content is sent to Gemini Pro to create a "Too Long; Didn't Read" (TL;DR) version.
 
-playsound3
+Sentiment Scoring: The BERT model analyzes the text to determine the prevailing sentiment.
 
-Set up a virtual environment (optional)
+Storage: Processed insights are stored in MongoDB to allow for historical analysis and faster retrieval.
+
+Presentation: The Streamlit dashboard fetches data from the backend/database and renders it into interactive charts and news cards.
+
+📈 Benefits
+Efficiency: Reduces the time spent reading multiple news sources by providing centralized, summarized content.
+
+Objectivity: Sentiment analysis helps users identify potential media bias or market mood at a glance.
+
+Scalability: The architecture supports adding new models or data sources without disrupting the core UI.
+
+📋 Installation & Setup
+Clone the Repository:
+
+Bash
+git clone https://github.com/Ananya9870/NewsAI.git
+cd NewsAI
+Create a Virtual Environment:
+
+Bash
 python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+Install Dependencies:
 
+Bash
+pip install -r requirements.txt
+Set Up Environment Variables:
+Create a .env file in the root directory and add your keys:
 
-Set your API Key
-Replace the placeholder inside main.py with your actual Google API key:
-GOOGLE_API_KEY = "your-api-key-here"
+Code snippet
+GEMINI_API_KEY=your_google_gemini_key
+NEWS_API_KEY=your_news_api_key
+MONGO_URI=your_mongodb_connection_string
+Run the Application:
+
+🤝 Contributing
+Contributions are welcome! Please fork the repository and create a pull request for any features or bug fixes.
